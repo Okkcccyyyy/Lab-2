@@ -1,0 +1,122 @@
+
+def esc(code):
+    return f'\u001b[{code}m'
+
+RED = esc(41)
+BLUE = esc(44)
+WHITE = esc(47)
+END = esc(0)
+
+def flag_thai():
+    for i in range(1):
+        print(RED + '   ' *8 + END)
+    for i in range(1):
+        print(WHITE + '   ' * 8 + END)
+    for i in range(2):
+        print(BLUE + '   ' *8 + END)
+    for i in range(1):
+        print(WHITE + '   ' * 8 + END)
+    for i in range(1):
+        print(RED + '   ' *8 + END)
+flag_thai()
+
+print('\n')
+
+def uzor():
+    f = (WHITE + '   ' * 3 + BLUE + '   ' * 2 + WHITE + '   ' * 3)
+    print( 10 * f)
+    b = (WHITE + '   ' * 2 + BLUE + '   ' * 1 + WHITE + '   ' * 2 + BLUE + '   ' *1 + WHITE + '   ' * 2)
+    print(10 * b)
+    c = (WHITE + '   ' * 1 + BLUE + '   ' * 1 + WHITE + '   ' * 4 + BLUE + '   ' * 1 + WHITE + '   ' * 1)
+    print(10*c)
+    d = (WHITE + '   ' * 0 + BLUE + '   ' * 1 + WHITE + '   ' * 6 + BLUE + '   ' * 1 )
+    print(10*d)
+    print(END)
+uzor()
+
+print('\n')
+
+print('\n')
+def array_init(array_in, st):
+    for i in range(10):
+        for j in range(10):
+            if j == 0:
+                array_in[i][j] = round(st * (8 - i) + st, 1)
+            if i == 9:
+                array_in[i][j] = round(j, 1)
+    return array_in
+
+
+def array_fill(array_fi, res, st):
+    for i in range(9):
+        for k in range(10):
+            if abs(array_fi[i][0] - res[9 - k]) < st:
+                for j in range(9):
+                    if 8 - j == k:
+                        array_fi[i][j + 1] = 1
+    return array_fi
+
+
+def print_plot(plot):
+    for i in range(9):
+        line = ''
+        for j in range(10):
+            if j == 0:
+                line += WHITE + str(plot[i][j])
+            if plot[i][j] == 0:
+                line += '  '
+            elif plot[i][j] == 1:
+                line += RED + '  ' + WHITE
+        line += END
+        print(line)
+    print(WHITE + '0   1 2 3 4 5 6 7 8 9' + END)
+
+
+array_plot = [[0 for col in range(10)] for row in range(10)]
+result = [0 for i in range(10)]
+
+
+for i in range(10):
+    result[i] = 3*i
+print(result)
+
+step = round(abs((result[9] - result[0])) / 9, 1)
+
+array_init(array_plot, step)
+array_fill(array_plot, result, step)
+print_plot(array_plot)
+
+#книги до 50 рублей ии дороже
+
+import csv
+with open ('C:/Users/79218/Downloads/books.csv', 'r', encoding='cp1251') as f:
+
+    table = csv.reader(f,delimiter =';')
+    knigi_do_50 = 0
+    knigi_bol_50 = 0
+    for row in table:
+        if row[7].isdigit():
+            if int(row[7]) < 50:
+                knigi_do_50 +=1
+            else:
+                knigi_bol_50 +=1
+
+mas = [[0 for kol in  range(8)] for row in range(21)]
+
+sootn1 = round( knigi_do_50 /(knigi_bol_50 + knigi_do_50) * 100)
+sootn2 = round( knigi_bol_50 / (knigi_do_50 + knigi_bol_50) * 100)
+
+for i in range(21):
+    line = ''
+    for j in range(8):
+        if j == 0:
+            line += f'{WHITE}{mas[i][0]}\t {END}'
+        elif mas[i][j] == 0:
+            line += f'{WHITE}   {END}'
+        elif mas[i][j] == 1:
+            line += f'{RED}   {END}'
+        elif mas[i][j] == 2:
+            line += f'{BLUE}   {END}'
+    print(line)
+
+print(f'\n{RED}  Меньше 50 руб - {knigi_do_50} книг\t{END}\n{BLUE} Больше 50 руб - {knigi_bol_50} книг\t{END} ')
